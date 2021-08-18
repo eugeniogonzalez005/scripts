@@ -17,7 +17,7 @@ NOCOLOR="\e[0m"
 
 # ==== MAIN FUNCTIONS ====
 
-prerequisites () {
+lamp_install () {
     local php apache mariadb
     php=(php php-curl php-xml php-gd php-mbstring php-zip php-mysql php-bz2 php-intl php-imap php-memcached php-imagick php-bcmath php-gmp)
     apache=(apache2 libapache2-mod-php)
@@ -25,8 +25,8 @@ prerequisites () {
     apt update
     apt install --assume-yes php "${php[@]}" "${apache[@]}" "${mariadb[@]}"
     mysql_secure_installation
-    systemctl restart mariadb && systemctl status mariadb || printf 'error: cant reload mariadb'
-    systemctl restart apache2 && systemctl status apache2 || printf 'error: cant reload apache2'
+    systemctl restart mariadb && systemctl status mariadb || printf 'error: unable to reload mariadb'
+    systemctl restart apache2 && systemctl status apache2 || printf 'error: unable to reload apache2'
     return
 }
 
@@ -44,7 +44,9 @@ site_configuration () {
 }
 
 nextcloud_install () {
-    cd "${NEXTCLOUD_DIR}" && wget https://download.nextcloud.com/server/installer/setup-nextcloud.php
+    local nextcloud_installer
+    nextcloud_installer='https://download.nextcloud.com/server/installer/setup-nextcloud.php'
+    cd "${NEXTCLOUD_DIR}" && wget "${nextcloud_installer}"
     return
 }
 
